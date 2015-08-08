@@ -1,7 +1,7 @@
 package tmjee.jcstress;
 
 import org.openjdk.jcstress.annotations.*;
-import org.openjdk.jcstress.infra.results.LongResult1;
+import org.openjdk.jcstress.infra.results.LongResult2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,22 +16,21 @@ public class RaceConditionInHashMapOfLongs {
 
     @JCStressTest
     @Description("Test racily getting long from HashMap")
-    @Outcome(id="[0]", expect = Expect.ACCEPTABLE, desc = "get back long 0L")
-    @Outcome(id="[1]", expect = Expect.ACCEPTABLE, desc = "get back long 2L")
+    @Outcome(id="[0, 1]", expect = Expect.ACCEPTABLE, desc = "get back long 0L and 1L")
     public static class StressTest1 {
 
         @Actor
-        public void actor1(MyState myState, LongResult1 r1) {
+        public void actor1(MyState myState, LongResult2 r1) {
             myState.map.put("k", 0L);
             Long r = myState.map.get("k");
             r1.r1 = (r == null ? -1 : r);
         }
 
         @Actor
-        public void actor2(MyState myState, LongResult1 r1) {
+        public void actor2(MyState myState, LongResult2 r1) {
             myState.map.put("k", 1L);
             Long r = myState.map.get("k");
-            r1.r1 = (r == null ? -1 : r);
+            r1.r2 = (r == null ? -1 : r);
         }
     }
 }
