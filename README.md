@@ -1,7 +1,7 @@
-# jcstress-tmjee
+# CRIME-BRAZIL-ANALYSIS
 
 Required
-- Java 8
+- Java 11
 - Maven
 
 To build
