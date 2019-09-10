@@ -24,17 +24,6 @@ public class NaiveBayes {
 	
 	
 	
-	public void cleanVariables(){
-		
-		qntTurno = 0;
-		qntSexo = 0;
-		qntCor = 0;
-		
-		coresNulas = 0;
-		turnoNulo = 0;
-		sexoNulo = 0;
-	}
-	
 	
 
 	/**

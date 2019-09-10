@@ -5,14 +5,6 @@ public class ArchiveThread extends Thread {
 	// instancia do processador do dataset
 	private Process archive;
 	
-	// instancia com os parametros analisados
-	//private NaiveBayes bayes;
-	
-	// parametros dados pelo usuario 
-	//private String sexo;
-	//private String cor;
-	//private String turno;
-	
 	// construtor
 	public ArchiveThread( Process archive ){
 		this.archive = archive;

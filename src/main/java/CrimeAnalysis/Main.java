@@ -6,11 +6,18 @@ import java.util.Scanner;
 public class Main {
 
 
+	private static Scanner scan;
+
+
 	public static void main(String [] args) throws IOException {
 		
 		Process proc = new Process();
-
-		initialize( proc );
+	
+		// calculo quantidade ideal de threads
+		int qntThreads = (int) ((Runtime.getRuntime().availableProcessors())/(1-0.9));
+	
+		
+		initialize( proc, qntThreads );
 		
 		if( proc.getQuantFurtos() > 0 ) {
 			System.out.println("DEU CERTO!!");
@@ -21,7 +28,7 @@ public class Main {
 		
 		int p1 = 0;
 		
-		Scanner scan = new Scanner(System.in);
+		scan = new Scanner(System.in);
 		System.out.println("0: encerrar programa; 1: fazer predição");
 		p1 = scan.nextInt();
 		
@@ -76,17 +83,17 @@ public class Main {
 			
 			
 			// inicializa threads
-			DataThread[] thrs = new DataThread[3]; 
+			DataThread[] thrs = new DataThread[qntThreads]; 
 			
 			// cria e inicializa threads
-			for( int i=0; i<3; i++ ){
+			for( int i=0; i<qntThreads; i++ ){
 				thrs[i] = new DataThread( bayes, proc, sexo, cor, turno );
 				thrs[i].start();
 			}
 			
 			// espera threads acabarem
 			try {
-				for( int i=0; i<3; i++ ) {
+				for( int i=0; i<qntThreads; i++ ) {
 					thrs[i].join();
 				}
 			} catch (InterruptedException e) {
@@ -97,7 +104,7 @@ public class Main {
 			// classifica dados
 			classifier(bayes, proc);
 			
-			clear( proc, bayes );
+			clear( proc );
 			
 			System.out.println("0: encerrar programa; 1: fazer predição");
 			p1 = scan.nextInt();
@@ -109,32 +116,33 @@ public class Main {
 	}
 	
 	
-	public static void initialize( Process proc ) {
+	public static void initialize( Process proc, int qntThreads ) {
+
 
 		// inicializa threads
-		ArchiveThread[] thrs = new ArchiveThread[3]; 
+		ArchiveThread[] thrs = new ArchiveThread[qntThreads]; 
 		
 		// cria e inicializa threads
-		for( int i=0; i<3; i++ ){
+		for( int i=0; i<qntThreads; i++ ){
 			thrs[i] = new ArchiveThread( proc );
 			thrs[i].start();
 		}
 		
 		// espera threads acabarem
-		try {
-			for( int i=0; i<3; i++ ) {
+		for( int i=0; i<qntThreads; i++ ) {
+			try {
 				thrs[i].join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 		
 	}
 	
-	public static void clear( Process proc, NaiveBayes bayes ){
+	public static void clear( Process proc ){
 		
 		proc.cleanCount();
-		bayes.cleanVariables();
 		
 	}
 	

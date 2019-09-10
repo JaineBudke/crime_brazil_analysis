@@ -19,33 +19,53 @@ import java.util.Iterator;
 public class Process {
 
 	// dataset
-	private File file;
+	private File file1;
+	private File file2;
+	private File file3;
 	
 	// leitor de arquivo
-	private Scanner arc;
+	private Scanner arc1;
+	private Scanner arc2;
+	private Scanner arc3;
 	
 	// armazenar dados do dataset aqui em uma estrutura de dados (usar hashmap)
     private List<String[]> dataset;
     
     
 	// contador do dataset
-	private volatile AtomicInteger count;
+	private AtomicInteger count;
 	
 	/**
 	 * Construtor. Referencia arquivo
 	 * @throws IOException
 	 */
 	public Process() throws IOException {
+		
+		/**
+		 * DATASETs
+		 */
 		// caminho do dataset
-		String fileName = "data/RDO_3.csv";
+		String fileName1 = "data/RDO_1.csv";
+		String fileName2 = "data/RDO_2.csv";
+		String fileName3 = "data/RDO_3.csv";
+		
 		// dataset
-		this.file = new File(fileName);
+		this.file1 = new File(fileName1);
+		this.file2 = new File(fileName2);
+		this.file3 = new File(fileName3);
+		
+		
 		// leitor de arquivo
-		this.arc = new Scanner(file);
+		this.arc1 = new Scanner(file1);
+		this.arc2 = new Scanner(file2);
+		this.arc3 = new Scanner(file3);
+		
 		
 		// ignora primeira linha: cabecalho
-		arc.nextLine();
-	
+		arc1.nextLine();
+		arc2.nextLine();
+		arc3.nextLine();
+		
 		// inicialização do iterador
 		dataset = Collections.synchronizedList(new ArrayList<String[]>()); 
 		
@@ -96,8 +116,13 @@ public class Process {
 		String line = "";
 		
 		// recupera proxima linha do arquivo
-		if( arc.hasNextLine() ) {
-			line = arc.nextLine();			
+		if( arc1.hasNextLine() ) {
+			line = arc1.nextLine();			
+		} else if( arc2.hasNextLine() ){
+			line = arc2.nextLine();
+		} 
+		else if( arc3.hasNextLine() ){
+			line = arc3.nextLine();
 		}
 		
 		System.out.println(line);
