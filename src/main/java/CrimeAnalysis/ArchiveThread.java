@@ -10,7 +10,7 @@ public class ArchiveThread extends Thread {
 		this.archive = archive;
 	}
 	
-
+	
 	public void run(){
 		
 		String line;

@@ -120,8 +120,7 @@ public class Process {
 			line = arc1.nextLine();			
 		} else if( arc2.hasNextLine() ){
 			line = arc2.nextLine();
-		} 
-		else if( arc3.hasNextLine() ){
+		} else if( arc3.hasNextLine() ){
 			line = arc3.nextLine();
 		}
 		

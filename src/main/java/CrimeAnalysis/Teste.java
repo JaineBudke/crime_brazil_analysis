@@ -7,56 +7,66 @@ public class Teste {
 
 	public static void main(String [] args) throws IOException {
 		
+		long tempoInicial = System.currentTimeMillis();
+
+		
 		Process proc = new Process();
-		NaiveBayes bayes = new NaiveBayes();
+		Features bayes = new Features();
 		
 		
 		// dá entrada numa cidade, hora e mes
 		String sexo = "F";
-		String cor  = "Amarela";
+		String cor  = "BRANCA";
 		String turno = "Tarde";
 		
+		initialize(proc);
 		
-		String line;
+		dataProcess(bayes, proc, sexo, cor, turno);
+		
+		classifier(bayes, proc);
+		
+		System.out.println("o metodo executou em " + (System.currentTimeMillis() - tempoInicial));
+
+
+		
+	}
 	
+	public static void initialize( Process archive ) {
+		String line;
+		
 		// enquanto tiver linhas
-		while( (line = proc.getLine()) != "" ) {
+		while( (line = archive.getLine()) != "" ) {
 			
 			// separa linha por virgula
 			String[] parts = line.split(",");
-
+					
+			int tam = parts.length;
+			
 			// verifica se é furto
 			String rubrica = (parts[16].split(" "))[0];
 
-			int tam = parts.length;
-			
 			// se for, pode analisar o restante dos casos
 			if("\"Furto".equals(rubrica) || "Furto".equals(rubrica) ) {
 								
-				
+				String[] memLine = new String[3]; 
+	
 				// verifica se é o mes passado pelo usuario		
-				String corLine = parts[ tam-1 ];
+				String corLine = parts[ tam-1 ].trim().toUpperCase();
 				
-				corLine = corLine.trim().toUpperCase();
 				
-				System.out.println(corLine);
+				// verifica se a cor corrente é uma das possíveis
 				if( corLine.equals("PRETA")   || 
 					corLine.equals("BRANCA")  || 
 					corLine.equals("AMARELA") || 
 					corLine.equals("PARDA")   ){
 					
-					if( corLine.equals(cor.trim().toUpperCase()) ){
-						bayes.incrementCor();
-					}		
-						
-				} else if( corLine.trim().toUpperCase().equals("NULL") ){
-					bayes.incrementCoresNulas();
-				}
-				else {
+					memLine[0] = corLine;							
 					
-					if( cor.equals("Outras") ){
-						bayes.incrementCor();
-					}	
+				// verifica se cor é nula
+				} else if( corLine.trim().toUpperCase().equals("NULL") ){
+					memLine[0] = "NULL";
+				} else {
+					memLine[0] = "OUTRAS";	
 				}
 					
 
@@ -84,28 +94,88 @@ public class Teste {
 						turnoLine = "Noite";
 					}
 					
-					if( turnoLine.equals(turno) ){
-						bayes.incrementTurno();
-					}
+					memLine[1] = turnoLine;
 
+				} else {
+					memLine[1] = "NULL";
 				}
 				
 				
-				// verifica se é a cidade passada pelo usuario
+				// armazena sexo
 				String sexoLine = parts[ tam-3 ];
-				if(sexoLine.equals(sexo)) {
-					bayes.incrementSexo();
-				}		
-								
+				memLine[2] = sexoLine;		
+					
+				archive.putLine(memLine);
+
 			}
+
 			
 		}
-		
-		classifier(bayes, proc );
-		
+
 	}
 	
-	public static void classifier( NaiveBayes bayes, Process proc ){
+	
+	public static void dataProcess( Features bayes, Process archive, String sexo, String cor, String turno ) {
+		
+		String[] line;
+		
+		// enquanto tiver linhas
+		while( (line = archive.getNext()) != null ) {  
+			 
+			// verifica se é o mes passado pelo usuario		
+			String corLine = line[0];
+			
+			// verifica se a cor corrente é uma das possíveis
+			if( corLine.equals("PRETA")   || 
+				corLine.equals("BRANCA")  || 
+				corLine.equals("AMARELA") || 
+				corLine.equals("PARDA")   ){
+				
+				if( corLine.equals(cor.trim().toUpperCase()) ){
+					bayes.incrementCor();
+				}		
+			
+			// verifica se for é nula
+			} else if( corLine.trim().toUpperCase().equals("NULL") ){
+				bayes.incrementCoresNulas();
+			} else {
+				if( cor.equals("Outras") ){
+					bayes.incrementCor();
+				}	
+			}
+			
+
+			// verifica se é a hora passada pelo usuario
+			if( !line[1].trim().toUpperCase().equals("NULL")){					
+			
+				String turnoLine = line[1];
+				
+				if( turnoLine.equals(turno) ){
+					bayes.incrementTurno();
+				}
+
+			} else {
+				bayes.incrementTurnoNulo();
+			}
+				
+			
+			// verifica se é o sexo passada pelo usuario
+			if( !line[2].trim().toUpperCase().equals("NULL") ) {
+				String sexoLine = line[2];
+				if(sexoLine.equals(sexo)) {
+					bayes.incrementSexo();
+				} 	
+			} else {
+				bayes.incrementSexoNulo();
+			}
+			
+			
+			
+								
+		}
+	}
+	
+	public static void classifier( Features bayes, Process proc ){
 		
 		float qntCor   = bayes.getCor();
 		float qntSexo  = bayes.getSexo();
@@ -114,6 +184,14 @@ public class Teste {
 		float coresNulas = bayes.getCoresNulas();
 		float turnoNulo = bayes.getTurnoNulo();
 		float sexoNulo = bayes.getSexoNulo();
+		
+		System.out.println(qntCor);
+		System.out.println(qntSexo);
+		System.out.println(qntTurno);
+		System.out.println(qntFurtos);
+		System.out.println(coresNulas);
+		System.out.println(turnoNulo);
+		System.out.println(sexoNulo);
 		
 		
 		// Classificações: Seguro (0), Pouco seguro (1), Inseguro (2)

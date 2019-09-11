@@ -22,6 +22,17 @@
             <scope>system</scope>
             <systemPath>${basedir}/ext-lib/jopt-simple.jar</systemPath>
         </dependency>
+        
+        <dependency>
+			<groupId>org.openjdk.jmh</groupId>
+		 	<artifactId>jmh-core</artifactId>
+		 	<version>1.21</version>
+		</dependency>
+		<dependency>
+		 	<groupId>org.openjdk.jmh</groupId>
+		 	<artifactId>jmh-generator-annprocess</artifactId>
+		 	<version>1.21</version>
+		</dependency>
     </dependencies>
 
    <build>

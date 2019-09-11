@@ -11,28 +11,35 @@ public class Main {
 
 	public static void main(String [] args) throws IOException {
 		
+		long tempoInicial = System.currentTimeMillis();
+
+		
 		Process proc = new Process();
 	
 		// calculo quantidade ideal de threads
-		int qntThreads = (int) ((Runtime.getRuntime().availableProcessors())/(1-0.9));
+		int qntThreads = 4;
+				//(int) ((Runtime.getRuntime().availableProcessors())/(1-0.9));
 	
 		
 		initialize( proc, qntThreads );
 		
-		if( proc.getQuantFurtos() > 0 ) {
+		/*if( proc.getQuantFurtos() > 0 ) {
 			System.out.println("DEU CERTO!!");
 		} else {
 			System.exit(0);
-		}
+		}*/
 		
 		
-		int p1 = 0;
+		//int p1 = 0;
 		
-		scan = new Scanner(System.in);
-		System.out.println("0: encerrar programa; 1: fazer predição");
-		p1 = scan.nextInt();
+		//scan = new Scanner(System.in);
+		//System.out.println("0: encerrar programa; 1: fazer predição");
+		//p1 = scan.nextInt();
 		
 		
+		Features bayes = new Features();
+	
+		/*
 		while( p1 != 0 ) {
 			
 			NaiveBayes bayes = new NaiveBayes();
@@ -79,8 +86,11 @@ public class Main {
 				cor = "AMARELA";
 			} else {
 				cor = "OUTRAS";
-			}
-			
+			}*/
+		
+			String sexo = "F";
+			String cor  = "BRANCA";
+			String turno = "Tarde";
 			
 			// inicializa threads
 			DataThread[] thrs = new DataThread[qntThreads]; 
@@ -104,14 +114,16 @@ public class Main {
 			// classifica dados
 			classifier(bayes, proc);
 			
-			clear( proc );
+			//clear( proc );
 			
-			System.out.println("0: encerrar programa; 1: fazer predição");
-			p1 = scan.nextInt();
+			//System.out.println("0: encerrar programa; 1: fazer predição");
+			//p1 = scan.nextInt();
 			
 			
-		} 
+		//} 
 		
+
+		System.out.println("o metodo executou em " + (System.currentTimeMillis() - tempoInicial));
 
 	}
 	
@@ -151,7 +163,7 @@ public class Main {
 	 * Classifica e imprime resultado (Seguro, Inseguro, Pouco Seguro) 
 	 * @param bayes Classe com parametros para classificação
 	 */
-	public static void classifier( NaiveBayes bayes, Process proc ){
+	public static void classifier( Features bayes, Process proc ){
 		
 		// recupera valores dos parametros analisados
 		float qntCor   = bayes.getCor();

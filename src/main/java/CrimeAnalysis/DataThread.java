@@ -6,7 +6,7 @@ public class DataThread extends Thread {
 	private Process archive;
 	
 	// instancia com os parametros analisados
-	private NaiveBayes bayes;
+	private Features bayes;
 	
 	// parametros dados pelo usuario 
 	private String sexo;
@@ -15,7 +15,7 @@ public class DataThread extends Thread {
 	
 	
 	// construtor
-	public DataThread(NaiveBayes bayes, Process archive, String sexo, String cor, String turno){
+	public DataThread(Features bayes, Process archive, String sexo, String cor, String turno){
 		this.bayes = bayes;
 		this.archive = archive;
 		this.sexo = sexo;
