@@ -3,11 +3,12 @@ package tmjee.jcstress;
 import org.openjdk.jcstress.annotations.*;
 import org.openjdk.jcstress.infra.results.LongResult2;
 
-import CrimeAnalysis.Features;
+//import CrimeAnalysis.Features;
 
 
 public class StressTestP6 {
 
+	/**
 	@State
 	public static class MyState extends Features{}
 	
@@ -28,6 +29,6 @@ public class StressTestP6 {
 			r.r2 = myState.incrementCoresNulas();
 		}
 				
-	} 
+	} **/
 	
 }

@@ -30,21 +30,21 @@ public class ArchiveThread extends Thread {
 			if("\"Furto".equals(rubrica) || "Furto".equals(rubrica) ) {
 								
 				String[] memLine = new String[3]; 
-	
+
 				// verifica se é o mes passado pelo usuario		
-				String corLine = parts[ tam-1 ].trim().toUpperCase();
+				String corLine = parts[ tam-1 ].trim();
 				
 				
 				// verifica se a cor corrente é uma das possíveis
-				if( corLine.equals("PRETA")   || 
-					corLine.equals("BRANCA")  || 
-					corLine.equals("AMARELA") || 
-					corLine.equals("PARDA")   ){
+				if( corLine.equalsIgnoreCase("PRETA")   || 
+					corLine.equalsIgnoreCase("BRANCA")  || 
+					corLine.equalsIgnoreCase("AMARELA") || 
+					corLine.equalsIgnoreCase("PARDA")   ){
 					
 					memLine[0] = corLine;							
 					
 				// verifica se cor é nula
-				} else if( corLine.trim().toUpperCase().equals("NULL") ){
+				} else if( corLine.equalsIgnoreCase("NULL") ){
 					memLine[0] = "NULL";
 				} else {
 					memLine[0] = "OUTRAS";	
@@ -54,7 +54,10 @@ public class ArchiveThread extends Thread {
 				// verifica se é a hora passada pelo usuario
 				if( !parts[13].equals("NULL")){					
 					
+					//int hourLine = Integer.parseInt(parts[13].substring(0, 1));
+					
 					int hourLine = 0;
+					
 					if( parts[13].split(":").length > 1 ){
 						hourLine = Integer.parseInt((parts[13].split(":")[0]));
 					} else if( parts[13].split("H").length > 1 ){
@@ -86,8 +89,9 @@ public class ArchiveThread extends Thread {
 				String sexoLine = parts[ tam-3 ];
 				memLine[2] = sexoLine;		
 					
+				
 				archive.putLine(memLine);
-
+				
 			}
 
 			

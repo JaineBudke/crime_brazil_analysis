@@ -11,17 +11,18 @@ public class Main {
 
 	public static void main(String [] args) throws IOException {
 		
-		long tempoInicial = System.currentTimeMillis();
+		
 
 		
 		Process proc = new Process();
 	
-		// calculo quantidade ideal de threads
+
 		int qntThreads = 4;
-				//(int) ((Runtime.getRuntime().availableProcessors())/(1-0.9));
 	
-		
+		long tempoInicial = System.currentTimeMillis();
 		initialize( proc, qntThreads );
+		System.out.println("o metodo executou em " + (System.currentTimeMillis() - tempoInicial));
+
 		
 		/*if( proc.getQuantFurtos() > 0 ) {
 			System.out.println("DEU CERTO!!");
@@ -37,8 +38,8 @@ public class Main {
 		//p1 = scan.nextInt();
 		
 		
-		Features bayes = new Features();
 	
+		
 		/*
 		while( p1 != 0 ) {
 			
@@ -87,13 +88,18 @@ public class Main {
 			} else {
 				cor = "OUTRAS";
 			}*/
+
+			// inicializa threads
+			DataThread[] thrs = new DataThread[qntThreads]; 
+			
+			for( int x=0; x<20;x++ ){
+				Features bayes = new Features();
+	
+			
 		
 			String sexo = "F";
 			String cor  = "BRANCA";
 			String turno = "Tarde";
-			
-			// inicializa threads
-			DataThread[] thrs = new DataThread[qntThreads]; 
 			
 			// cria e inicializa threads
 			for( int i=0; i<qntThreads; i++ ){
@@ -114,16 +120,15 @@ public class Main {
 			// classifica dados
 			classifier(bayes, proc);
 			
-			//clear( proc );
+			clear( proc );
 			
 			//System.out.println("0: encerrar programa; 1: fazer predição");
 			//p1 = scan.nextInt();
-			
+			}
 			
 		//} 
 		
 
-		System.out.println("o metodo executou em " + (System.currentTimeMillis() - tempoInicial));
 
 	}
 	

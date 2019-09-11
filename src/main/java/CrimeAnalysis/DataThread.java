@@ -35,48 +35,47 @@ public class DataThread extends Thread {
 			String corLine = line[0];
 			
 			// verifica se a cor corrente é uma das possíveis
-			if( corLine.equals("PRETA")   || 
-				corLine.equals("BRANCA")  || 
-				corLine.equals("AMARELA") || 
-				corLine.equals("PARDA")   ){
+			if( corLine.equalsIgnoreCase("PRETA")   || 
+				corLine.equalsIgnoreCase("BRANCA")  || 
+				corLine.equalsIgnoreCase("AMARELA") || 
+				corLine.equalsIgnoreCase("PARDA")   ){
 				
-				if( corLine.equals(cor.trim().toUpperCase()) ){
+				if( corLine.equalsIgnoreCase(cor) ){
 					bayes.incrementCor();
 				}		
 			
 			// verifica se for é nula
-			} else if( corLine.trim().toUpperCase().equals("NULL") ){
+			} else if( corLine.equalsIgnoreCase("NULL") ){
 				bayes.incrementCoresNulas();
-			} else {
-				if( cor.equals("Outras") ){
-					bayes.incrementCor();
-				}	
+			} else if( cor.equalsIgnoreCase("Outras") ){
+				bayes.incrementCor();
 			}
 			
-
+		
 			// verifica se é a hora passada pelo usuario
-			if( !line[1].trim().toUpperCase().equals("NULL")){					
+			if( !line[1].equalsIgnoreCase("NULL")){					
 			
 				String turnoLine = line[1];
 				
-				if( turnoLine.equals(turno) ){
+				if( turnoLine.equalsIgnoreCase(turno) ){
 					bayes.incrementTurno();
 				}
-
+				
 			} else {
 				bayes.incrementTurnoNulo();
 			}
 				
 			
 			// verifica se é o sexo passada pelo usuario
-			if( !line[2].trim().toUpperCase().equals("NULL") ) {
+			if( !line[2].equalsIgnoreCase("NULL") ) {
 				String sexoLine = line[2];
-				if(sexoLine.equals(sexo)) {
+				if(sexoLine.equalsIgnoreCase(sexo)) {
 					bayes.incrementSexo();
 				} 	
 			} else {
 				bayes.incrementSexoNulo();
 			}
+			
 			
 			
 			

@@ -7,27 +7,35 @@ public class Teste {
 
 	public static void main(String [] args) throws IOException {
 		
-		long tempoInicial = System.currentTimeMillis();
 
 		
 		Process proc = new Process();
-		Features bayes = new Features();
+		
+
 		
 		
-		// dá entrada numa cidade, hora e mes
-		String sexo = "F";
-		String cor  = "BRANCA";
-		String turno = "Tarde";
 		
+		
+		long tempoInicial = System.currentTimeMillis();
 		initialize(proc);
 		
+		
+		System.out.println("o metodo executou em " + (System.currentTimeMillis() - tempoInicial));
+
+		for( int x=0; x<20;x++ ){
+			Features bayes = new Features();
+
+			// dá entrada numa cidade, hora e mes
+			String sexo = "F";
+			String cor  = "BRANCA";
+			String turno = "Tarde";
 		dataProcess(bayes, proc, sexo, cor, turno);
 		
 		classifier(bayes, proc);
 		
-		System.out.println("o metodo executou em " + (System.currentTimeMillis() - tempoInicial));
-
-
+		proc.cleanCount();
+		
+		}
 		
 	}
 	

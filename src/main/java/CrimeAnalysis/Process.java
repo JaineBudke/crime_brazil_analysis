@@ -1,5 +1,6 @@
 package CrimeAnalysis;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +24,9 @@ public class Process {
 	private File file2;
 	private File file3;
 	
+	private File fileTest;
+	private Scanner arcTest;
+	
 	// leitor de arquivo
 	private Scanner arc1;
 	private Scanner arc2;
@@ -37,9 +41,10 @@ public class Process {
 	
 	/**
 	 * Construtor. Referencia arquivo
+	 * @throws FileNotFoundException 
 	 * @throws IOException
 	 */
-	public Process() throws IOException {
+	public Process() throws FileNotFoundException {
 		
 		/**
 		 * DATASETs
@@ -48,6 +53,13 @@ public class Process {
 		String fileName1 = "data/RDO_1.csv";
 		String fileName2 = "data/RDO_2.csv";
 		String fileName3 = "data/RDO_3.csv";
+		
+		String fileName = "data/Test.csv";
+		this.fileTest = new File(fileName);
+		
+		//this.arcTest = new Scanner(fileTest);
+		
+
 		
 		// dataset
 		this.file1 = new File(fileName1);
@@ -124,11 +136,16 @@ public class Process {
 			line = arc3.nextLine();
 		}
 		
-		System.out.println(line);
+		/*if( arcTest.hasNextLine() ) {
+			line = arcTest.nextLine();			
+		} */
+		
+		//System.out.println(line);
 		
 		return line;
 		
 	}
+
 	
 	
 }
