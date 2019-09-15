@@ -4,7 +4,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class BenchDataTest {
 
-	
+	@Benchmark
 	public void init() {
 	
 		String[] line = new String[3];

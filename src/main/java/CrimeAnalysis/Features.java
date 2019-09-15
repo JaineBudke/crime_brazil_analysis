@@ -3,15 +3,19 @@ package CrimeAnalysis;
 
 public class Features {
 
-	
+	// contadores dos parametros
 	private int qntTurno;
 	private int qntSexo;
 	private int qntCor;
 	
+	
+	// contadores dos valores nulos
 	private int coresNulas;
 	private int turnoNulo;
 	private int sexoNulo;
 	
+	
+	// construtor
 	public Features() {
 		qntTurno = 0;
 		qntSexo = 0;
@@ -23,9 +27,6 @@ public class Features {
 	}
 	
 	
-	
-	
-
 	/**
 	 * Incrementa variavel de quantidade de cores nulas no dataset
 	 */

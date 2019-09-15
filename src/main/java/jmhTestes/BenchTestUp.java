@@ -6,7 +6,7 @@ import org.openjdk.jmh.annotations.Benchmark;
 
 public class BenchTestUp {
 
-	
+	@Benchmark
 	public void init()  {
 	
 		

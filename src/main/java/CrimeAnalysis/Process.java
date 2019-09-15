@@ -1,19 +1,13 @@
 package CrimeAnalysis;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
-import java.util.Vector;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.Iterator;
 
 
 
@@ -23,9 +17,6 @@ public class Process {
 	private File file1;
 	private File file2;
 	private File file3;
-	
-	private File fileTest;
-	private Scanner arcTest;
 	
 	// leitor de arquivo
 	private Scanner arc1;
@@ -54,12 +45,6 @@ public class Process {
 		String fileName2 = "data/RDO_2.csv";
 		String fileName3 = "data/RDO_3.csv";
 		
-		String fileName = "data/Test.csv";
-		this.fileTest = new File(fileName);
-		
-		//this.arcTest = new Scanner(fileTest);
-		
-
 		
 		// dataset
 		this.file1 = new File(fileName1);
@@ -78,23 +63,32 @@ public class Process {
 		arc2.nextLine();
 		arc3.nextLine();
 		
-		// inicialização do iterador
 		dataset = Collections.synchronizedList(new ArrayList<String[]>()); 
 		
 		count = new AtomicInteger(0); 
 		
 	}
 	
+	/**
+	 * Recupera quantidade de furtos
+	 * @return Quantidade de furtos
+	 */
 	public int getQuantFurtos() {
 		return dataset.size();
 	}
 	
-	
-	public void cleanCount() {
+	/**
+	 * Limpa contador
+	 */
+	public void clearCount() {
 		count = new AtomicInteger(0);
 	}
 	
 	
+	/**
+	 * Recupera próximo dado da memória
+	 * @return vetor com dados da memória
+	 */
 	public synchronized String[] getNext(){
 			
 		String[] line = null;
@@ -112,6 +106,11 @@ public class Process {
 		
 	}
 	
+	
+	/**
+	 * Adiciona novo dado à memória
+	 * @param memLine Dado a ser adicionado
+	 */
 	public synchronized void putLine( String[] memLine ){
 		
 		dataset.add( memLine );
@@ -135,12 +134,6 @@ public class Process {
 		} else if( arc3.hasNextLine() ){
 			line = arc3.nextLine();
 		}
-		
-		/*if( arcTest.hasNextLine() ) {
-			line = arcTest.nextLine();			
-		} */
-		
-		//System.out.println(line);
 		
 		return line;
 		

@@ -66,7 +66,7 @@ public class DataThread extends Thread {
 			}
 				
 			
-			// verifica se é o sexo passada pelo usuario
+			// verifica se é o sexo passado pelo usuario
 			if( !line[2].equalsIgnoreCase("NULL") ) {
 				String sexoLine = line[2];
 				if(sexoLine.equalsIgnoreCase(sexo)) {

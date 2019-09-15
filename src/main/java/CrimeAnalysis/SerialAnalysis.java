@@ -3,43 +3,46 @@ package CrimeAnalysis;
 import java.io.IOException;
 
 
-public class Teste {
+public class SerialAnalysis {
 
 	public static void main(String [] args) throws IOException {
 		
+		long inicio = System.currentTimeMillis();  
 
-		
 		Process proc = new Process();
-		
+		Features bayes = new Features();
 
 		
-		
-		
-		
-		long tempoInicial = System.currentTimeMillis();
+		// processa dados em arquivo
 		initialize(proc);
 		
+		// simula entrada do usuario
+		String sexo = "F";
+		String cor  = "BRANCA";
+		String turno = "Tarde";
 		
-		System.out.println("o metodo executou em " + (System.currentTimeMillis() - tempoInicial));
-
-		for( int x=0; x<20;x++ ){
-			Features bayes = new Features();
-
-			// dá entrada numa cidade, hora e mes
-			String sexo = "F";
-			String cor  = "BRANCA";
-			String turno = "Tarde";
+		// processa dados em memória
 		dataProcess(bayes, proc, sexo, cor, turno);
 		
+		// classifica dados
 		classifier(bayes, proc);
 		
-		proc.cleanCount();
 		
-		}
+		long fim  = System.currentTimeMillis();  
+		System.out.println( fim - inicio );
+		
+		
 		
 	}
 	
+	
+
+	/**
+	 * Processa dados de arquivo para memória
+	 * @param proc Instancia de Process
+	 */
 	public static void initialize( Process archive ) {
+		
 		String line;
 		
 		// enquanto tiver linhas
@@ -122,7 +125,14 @@ public class Teste {
 
 	}
 	
-	
+	/**
+	 * Processa dados que estão na memória
+	 * @param bayes Instancia de Features
+	 * @param archive Instancia de Process
+	 * @param sexo Parametro dado por usuario
+	 * @param cor Parametro dado por usuario
+	 * @param turno Parametro dado por usuario
+	 */
 	public static void dataProcess( Features bayes, Process archive, String sexo, String cor, String turno ) {
 		
 		String[] line;
@@ -183,6 +193,13 @@ public class Teste {
 		}
 	}
 	
+	
+	/**
+	 * Classifica resultado (Seguro, Inseguro, Pouco Seguro) 
+	 * @param bayes Instancia de Features
+	 * @param proc Instancia de Process
+	 * @return resultado da classificação
+	 */
 	public static void classifier( Features bayes, Process proc ){
 		
 		float qntCor   = bayes.getCor();
@@ -192,15 +209,7 @@ public class Teste {
 		float coresNulas = bayes.getCoresNulas();
 		float turnoNulo = bayes.getTurnoNulo();
 		float sexoNulo = bayes.getSexoNulo();
-		
-		System.out.println(qntCor);
-		System.out.println(qntSexo);
-		System.out.println(qntTurno);
-		System.out.println(qntFurtos);
-		System.out.println(coresNulas);
-		System.out.println(turnoNulo);
-		System.out.println(sexoNulo);
-		
+			
 		
 		// Classificações: Seguro (0), Pouco seguro (1), Inseguro (2)
 		int sexoClassify;

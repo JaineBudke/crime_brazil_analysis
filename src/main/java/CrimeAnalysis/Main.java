@@ -10,41 +10,24 @@ public class Main {
 
 
 	public static void main(String [] args) throws IOException {
+				
+		Process proc = new Process();		
 		
-		
-
-		
-		Process proc = new Process();
-	
-
 		int qntThreads = 4;
-	
-		long tempoInicial = System.currentTimeMillis();
-		initialize( proc, qntThreads );
-		System.out.println("o metodo executou em " + (System.currentTimeMillis() - tempoInicial));
-
 		
-		/*if( proc.getQuantFurtos() > 0 ) {
-			System.out.println("DEU CERTO!!");
-		} else {
-			System.exit(0);
-		}*/
+		// processamento dos dados diretamentos dos datasets
+		ArchiveThread arc = new ArchiveThread(proc);
+		arc.initialize();
+		
+		int p1 = 0;
 		
 		
-		//int p1 = 0;
+		scan = new Scanner(System.in);
+		System.out.println("0: encerrar programa; 1: fazer predição");
+		p1 = scan.nextInt();
 		
-		//scan = new Scanner(System.in);
-		//System.out.println("0: encerrar programa; 1: fazer predição");
-		//p1 = scan.nextInt();
-		
-		
-	
-		
-		/*
 		while( p1 != 0 ) {
-			
-			NaiveBayes bayes = new NaiveBayes();
-			
+						
 			// entradas do usuario
 			String sexo = "";
 			String cor  = "";
@@ -87,88 +70,84 @@ public class Main {
 				cor = "AMARELA";
 			} else {
 				cor = "OUTRAS";
-			}*/
+			}
 
-			// inicializa threads
-			DataThread[] thrs = new DataThread[qntThreads]; 
-			
-			for( int x=0; x<20;x++ ){
-				Features bayes = new Features();
-	
-			
 		
-			String sexo = "F";
-			String cor  = "BRANCA";
-			String turno = "Tarde";
+			String result = makeAnalysis( qntThreads, proc, cor, sexo, turno );
+
+			System.out.println(result);
+
 			
-			// cria e inicializa threads
-			for( int i=0; i<qntThreads; i++ ){
-				thrs[i] = new DataThread( bayes, proc, sexo, cor, turno );
-				thrs[i].start();
-			}
+			System.out.println("0: encerrar programa; 1: fazer predição");
+			p1 = scan.nextInt();
 			
-			// espera threads acabarem
-			try {
-				for( int i=0; i<qntThreads; i++ ) {
-					thrs[i].join();
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		}
 			
-			
-			// classifica dados
-			classifier(bayes, proc);
-			
-			clear( proc );
-			
-			//System.out.println("0: encerrar programa; 1: fazer predição");
-			//p1 = scan.nextInt();
-			}
-			
-		//} 
+	} 
 		
 
+	/**
+	 * Análise com dados na memória e com base nas entradas do usuário
+	 * @param proc Instancia de Process
+	 * @param cor Variável cor dada como entrada pelo usuário
+	 * @param sexo Variável sexo dada como entrada pelo usuário
+	 * @param turno Variável turno dada como entrada pelo usuário
+	 * @return resultado da classificação 
+	 */
+	public static String makeAnalysis( int qntThreads, Process proc, String cor, String sexo, String turno ){
+		
 
-	}
-	
-	
-	public static void initialize( Process proc, int qntThreads ) {
+		// instancia da classe Features
+		Features bayes = new Features();
 
-
-		// inicializa threads
-		ArchiveThread[] thrs = new ArchiveThread[qntThreads]; 
+		DataThread[] thrs = new DataThread[qntThreads]; 
 		
 		// cria e inicializa threads
 		for( int i=0; i<qntThreads; i++ ){
-			thrs[i] = new ArchiveThread( proc );
+			thrs[i] = new DataThread( bayes, proc, sexo, cor, turno );
 			thrs[i].start();
 		}
 		
 		// espera threads acabarem
-		for( int i=0; i<qntThreads; i++ ) {
-			try {
+		try {
+			for( int i=0; i<qntThreads; i++ ) {
 				thrs[i].join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		
+		
+		// classifica dados
+		String classif = classifier(bayes, proc);
+		
+		clear( proc );
+		
+		return classif;
 		
 	}
 	
+	
+	
+	
+	/**
+	 * Limpa contador da classe Process
+	 * @param proc Instancia de Process
+	 */
 	public static void clear( Process proc ){
 		
-		proc.cleanCount();
+		proc.clearCount();
 		
 	}
 	
 	
 	/**
-	 * Classifica e imprime resultado (Seguro, Inseguro, Pouco Seguro) 
-	 * @param bayes Classe com parametros para classificação
+	 * Classifica resultado (Seguro, Inseguro, Pouco Seguro) 
+	 * @param bayes Instancia de Features
+	 * @param proc Instancia de Process
+	 * @return resultado da classificação
 	 */
-	public static void classifier( Features bayes, Process proc ){
+	public static String classifier( Features bayes, Process proc ){
 		
 		// recupera valores dos parametros analisados
 		float qntCor   = bayes.getCor();
@@ -178,14 +157,6 @@ public class Main {
 		float coresNulas = bayes.getCoresNulas();
 		float turnoNulo = bayes.getTurnoNulo();
 		float sexoNulo = bayes.getSexoNulo();
-		
-		System.out.println(qntCor);
-		System.out.println(qntSexo);
-		System.out.println(qntTurno);
-		System.out.println(qntFurtos);
-		System.out.println(coresNulas);
-		System.out.println(turnoNulo);
-		System.out.println(sexoNulo);
 		
 		
 		// Classificações: Seguro (0), Pouco seguro (1), Inseguro (2)
@@ -222,16 +193,19 @@ public class Main {
 			turnoClassify = 1;
 		}	
 		
+		String classif = ""; 
 		
 		// soma >= 4: inseguro; soma <= 2: seguro; caso contrario: pouco seguro 
 		if( (sexoClassify + corClassify + turnoClassify) >= 4 ){
-			System.out.println("INSEGURO");
+			classif = "INSEGURO";
 		} else if( (sexoClassify + corClassify + turnoClassify) <= 2 ) {
-			System.out.println("SEGURO");
+			classif = "SEGURO";
 		} else {
-			System.out.println("POUCO SEGURO");
+			classif = "POUCO SEGURO";
 		}
-				
+			
+		return classif;
+		
 	}
 
 	
