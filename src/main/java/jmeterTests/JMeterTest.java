@@ -39,7 +39,7 @@ public class JMeterTest extends AbstractJavaSamplerClient implements Serializabl
 		}
 		
 		
-		if( Main.makeAnalysis( 4, proc, var1, var2, var3) == "INSEGURO" ) {
+		if( Main.makeAnalysis( proc, var1, var2, var3) == "INSEGURO" ) {
 			result.sampleEnd();
 			result.setResponseCode("200");
 			result.setResponseMessage("OK");
@@ -52,7 +52,7 @@ public class JMeterTest extends AbstractJavaSamplerClient implements Serializabl
 		}
 		return result; 
 	}
-		
+	
 	@Override public Arguments getDefaultParameters() {
 		Arguments defaultParameters = new Arguments();
 		defaultParameters.addArgument("var1","BRANCA");

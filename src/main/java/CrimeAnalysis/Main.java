@@ -2,18 +2,26 @@ package CrimeAnalysis;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
+
 
 public class Main {
 
 
 	private static Scanner scan;
 
+	private static final Executor exec = Executors.newFixedThreadPool(100); 
 
 	public static void main(String [] args) throws IOException {
 				
 		Process proc = new Process();		
 		
-		int qntThreads = 4;
+		//int qntThreads = 4;
+		
+		
 		
 		// processamento dos dados diretamentos dos datasets
 		ArchiveThread arc = new ArchiveThread(proc);
@@ -73,7 +81,7 @@ public class Main {
 			}
 
 		
-			String result = makeAnalysis( qntThreads, proc, cor, sexo, turno );
+			String result = makeAnalysis( proc, cor, sexo, turno );
 
 			System.out.println(result);
 
@@ -94,14 +102,43 @@ public class Main {
 	 * @param turno Variável turno dada como entrada pelo usuário
 	 * @return resultado da classificação 
 	 */
-	public static String makeAnalysis( int qntThreads, Process proc, String cor, String sexo, String turno ){
+	public static String makeAnalysis( Process proc, String cor, String sexo, String turno ){
 		
+		int qntThreads = 4;
 
 		// instancia da classe Features
 		Features bayes = new Features();
 
 		DataThread[] thrs = new DataThread[qntThreads]; 
 		
+		/*Runnable data1 = new DataT( bayes, proc, sexo, cor, turno ); 
+		Runnable data2 = new DataT( bayes, proc, sexo, cor, turno ); 
+		Runnable data3 = new DataT( bayes, proc, sexo, cor, turno ); 
+		Runnable data4 = new DataT( bayes, proc, sexo, cor, turno ); 
+		
+		exec.execute(data1);
+		exec.execute(data2);
+		exec.execute(data3);
+		exec.execute(data4);
+		
+		
+		int queued, active, notCompleted;
+		do {
+			
+			queued = ((ThreadPoolExecutor) exec).getQueue().size();
+			active = ((ThreadPoolExecutor) exec).getActiveCount();
+			notCompleted = queued + active; // approximate
+			
+		}
+		while( notCompleted != 0 );
+		*/
+		
+		// classifica dados
+		String classif = classifier(bayes, proc);
+		
+		clear( proc );
+		
+
 		// cria e inicializa threads
 		for( int i=0; i<qntThreads; i++ ){
 			thrs[i] = new DataThread( bayes, proc, sexo, cor, turno );
@@ -117,11 +154,6 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		
-		// classifica dados
-		String classif = classifier(bayes, proc);
-		
-		clear( proc );
 		
 		return classif;
 		

@@ -129,11 +129,13 @@ public class Process {
 		// recupera proxima linha do arquivo
 		if( arc1.hasNextLine() ) {
 			line = arc1.nextLine();			
-		} else if( arc2.hasNextLine() ){
+		} /*else if( arc2.hasNextLine() ){
 			line = arc2.nextLine();
 		} else if( arc3.hasNextLine() ){
 			line = arc3.nextLine();
-		}
+		}*/
+		
+		System.out.println(line);
 		
 		return line;
 		

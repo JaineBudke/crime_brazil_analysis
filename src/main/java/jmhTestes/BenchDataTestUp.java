@@ -1,10 +1,12 @@
 package jmhTestes;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Warmup;
 
 public class BenchDataTestUp {
 
 	@Benchmark
+	@Warmup(iterations = 2)
 	public void init() {
 	
 		String[] line = new String[3];

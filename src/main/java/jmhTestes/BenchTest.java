@@ -1,12 +1,10 @@
 package jmhTestes;
 
 
-import org.openjdk.jmh.annotations.Benchmark;
 
 
 public class BenchTest {
 	
-	@Benchmark
 	public void init() {
 	
 		
