@@ -9,37 +9,36 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 
-import CrimeAnalysis.Main;
+import CrimeAnalysis.ArchiveThread;
+import CrimeAnalysis.Classifier;
 import CrimeAnalysis.Process;
 
 
 public class JMeterTest extends AbstractJavaSamplerClient implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
-
+	
+	
+	
 	@Override public SampleResult runTest(JavaSamplerContext javaSamplerContext) {
 	
 		String var1 = javaSamplerContext.getParameter("var1");
 		String var2 = javaSamplerContext.getParameter("var2");
-		String var3 = javaSamplerContext.getParameter("var3");
-
-		
+		String var3 = javaSamplerContext.getParameter("var3");		
 		
 		SampleResult result = new SampleResult();
 		result.sampleStart();
-		result.setSampleLabel("Test Sample");
+		result.setSampleLabel("Test Main");
 		
-		Main main = new Main();
+		Classifier classif = new Classifier();
 		Process proc = null;
 		try {
 			proc = new Process();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
-		
-		if( Main.makeAnalysis( proc, var1, var2, var3) == "INSEGURO" ) {
+
+		if( classif.makeAnalysis( proc, var1, var2, var3).equalsIgnoreCase("INSEGURO") ) {
 			result.sampleEnd();
 			result.setResponseCode("200");
 			result.setResponseMessage("OK");
