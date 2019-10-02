@@ -7,7 +7,9 @@ public class Features {
 	private int qntTurno;
 	private int qntSexo;
 	private int qntCor;
+
 	
+	private int qntFurtos;
 	
 	// contadores dos valores nulos
 	private int coresNulas;
@@ -27,46 +29,57 @@ public class Features {
 	}
 	
 	
+	
+	
+	public void incrementFurtos(){
+		qntFurtos++;
+	}
+	
+	public int getFurtos() {
+		return qntFurtos;
+	}
+	
+	
 	/**
 	 * Incrementa variavel de quantidade de cores nulas no dataset
 	 */
-	public synchronized int incrementCoresNulas(){
-		return coresNulas++;
+	public synchronized int incrementCoresNulas( int quantity ){
+		return coresNulas+=quantity;
 	}
 	
 	/**
 	 * Incrementa variavel de quantidade de turnos nulos no dataset
 	 */
-	public synchronized int incrementTurnoNulo(){
-		return turnoNulo++;
+	public synchronized int incrementTurnoNulo( int quantity ){
+		return turnoNulo+=quantity;
 	}
 	
 	/**
 	 * Incrementa variavel de quantidade de sexo nulo no dataset
 	 */
-	public synchronized int incrementSexoNulo(){
-		return sexoNulo++;
+	public synchronized int incrementSexoNulo( int quantity ){
+		return sexoNulo+=quantity;
 	}
 
 	/**
 	 * Incrementa variavel de quantidade de correspondências do parametro turno
 	 */
-	public synchronized int incrementTurno(){
-		return qntTurno++;
+	public synchronized int incrementTurno( int quantity ){
+		return qntTurno+=quantity;
 	}
 
 	/**
 	 * Incrementa variavel de quantidade de correspondências do parametro sexo
 	 */
-	public synchronized int incrementSexo(){
-		return qntSexo++;
+	public synchronized int incrementSexo( int quantity ){
+		return qntSexo+=quantity;
 	}
 	
 	/**
 	 * Incrementa variavel de quantidade de correspondências do parametro cor
 	 */
-	public synchronized int incrementCor(){
-		return qntCor++;
+	public synchronized int incrementCor( int quantity ){
+		return qntCor+=quantity;
 	}
 	
 

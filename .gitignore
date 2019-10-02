@@ -2,6 +2,7 @@
 *.swp
 data
 results
+*.jfr
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

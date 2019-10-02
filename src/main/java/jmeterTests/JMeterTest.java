@@ -18,6 +18,20 @@ public class JMeterTest extends AbstractJavaSamplerClient implements Serializabl
 
 	private static final long serialVersionUID = 1L;
 	
+	private Process proc;
+	
+	@Override public void setupTest(JavaSamplerContext context) {
+		
+		try {
+			proc = new Process();
+			// processamento dos dados diretamentos dos datasets
+			//ArchiveThread arc = new ArchiveThread(proc);
+			//arc.initialize();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}	
+		
+	}
 	
 	
 	@Override public SampleResult runTest(JavaSamplerContext javaSamplerContext) {
@@ -31,12 +45,12 @@ public class JMeterTest extends AbstractJavaSamplerClient implements Serializabl
 		result.setSampleLabel("Test Main");
 		
 		Classifier classif = new Classifier();
-		Process proc = null;
-		try {
-			proc = new Process();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+//		Process proc = null;
+//		try {
+//			proc = new Process();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
 
 		if( classif.makeAnalysis( proc, var1, var2, var3).equalsIgnoreCase("INSEGURO") ) {
 			result.sampleEnd();

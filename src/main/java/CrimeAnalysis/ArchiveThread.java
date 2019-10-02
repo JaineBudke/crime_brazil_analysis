@@ -5,9 +5,13 @@ public class ArchiveThread extends Thread {
 	// instancia do processador do dataset
 	private Process archive;
 	
+	private Features bayes;
+	
 	// construtor
-	public ArchiveThread( Process archive ){
+	public ArchiveThread( Features bayes, Process archive ){
 		this.archive = archive;
+		
+		this.bayes = bayes;
 	}
 	
 	/**
@@ -109,6 +113,8 @@ public class ArchiveThread extends Thread {
 		// enquanto tiver linhas
 		while( (line = archive.getLine()) != "" ) {
 			
+			bayes.incrementFurtos();
+			
 			// separa linha por virgula
 			String[] parts = line.split(",");
 					
@@ -120,7 +126,7 @@ public class ArchiveThread extends Thread {
 			// se for, pode analisar o restante dos casos
 			if("\"Furto".equals(rubrica) || "Furto".equals(rubrica) ) {
 								
-				String[] memLine = new String[3]; 
+				//String[] memLine = new String[3]; 
 
 				// verifica se é o mes passado pelo usuario		
 				String corLine = parts[ tam-1 ].trim();
@@ -132,13 +138,18 @@ public class ArchiveThread extends Thread {
 					corLine.equalsIgnoreCase("AMARELA") || 
 					corLine.equalsIgnoreCase("PARDA")   ){
 					
-					memLine[0] = corLine;							
+					archive.putLineC(corLine);
+					
+					//memLine[0] = corLine;							
 					
 				// verifica se cor é nula
 				} else if( corLine.equalsIgnoreCase("NULL") ){
-					memLine[0] = "NULL";
+					//memLine[0] = "NULL";
+					bayes.incrementCoresNulas(1);
+					
 				} else {
-					memLine[0] = "OUTRAS";	
+					archive.putLineC("OUTRAS");
+					//memLine[0] = "OUTRAS";	
 				}
 					
 
@@ -167,19 +178,20 @@ public class ArchiveThread extends Thread {
 						turnoLine = "Noite";
 					}
 					
-					memLine[1] = turnoLine;
+					archive.putLineT(turnoLine);
+					//memLine[1] = turnoLine;
 
 				} else {
-					memLine[1] = "NULL";
+					bayes.incrementTurnoNulo(1);
+					//memLine[1] = "NULL";
 				}
 				
 				
 				// armazena sexo
 				String sexoLine = parts[ tam-3 ];
-				memLine[2] = sexoLine;		
-					
+				//memLine[2] = sexoLine;		
+				archive.putLineS(sexoLine);
 				
-				archive.putLine(memLine);
 				
 			}
 

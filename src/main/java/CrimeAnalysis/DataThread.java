@@ -41,14 +41,14 @@ public class DataThread extends Thread {
 				corLine.equalsIgnoreCase("PARDA")   ){
 				
 				if( corLine.equalsIgnoreCase(cor) ){
-					bayes.incrementCor();
+					bayes.incrementCor(1);
 				}		
 			
 			// verifica se for é nula
 			} else if( corLine.equalsIgnoreCase("NULL") ){
-				bayes.incrementCoresNulas();
+				bayes.incrementCoresNulas(1);
 			} else if( cor.equalsIgnoreCase("Outras") ){
-				bayes.incrementCor();
+				bayes.incrementCor(1);
 			}
 			
 		
@@ -58,11 +58,11 @@ public class DataThread extends Thread {
 				String turnoLine = line[1];
 				
 				if( turnoLine.equalsIgnoreCase(turno) ){
-					bayes.incrementTurno();
+					bayes.incrementTurno(1);
 				}
 				
 			} else {
-				bayes.incrementTurnoNulo();
+				bayes.incrementTurnoNulo(1);
 			}
 				
 			
@@ -70,10 +70,10 @@ public class DataThread extends Thread {
 			if( !line[2].equalsIgnoreCase("NULL") ) {
 				String sexoLine = line[2];
 				if(sexoLine.equalsIgnoreCase(sexo)) {
-					bayes.incrementSexo();
+					bayes.incrementSexo(1);
 				} 	
 			} else {
-				bayes.incrementSexoNulo();
+				bayes.incrementSexoNulo(1);
 			}
 			
 			

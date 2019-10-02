@@ -15,18 +15,18 @@ public class StressTestP6 {
 	
 	@JCStressTest
 	@Description("Teste da variavel 'cor nula' da classe Features")
-	@Outcome(id="[0, 1]", expect = Expect.ACCEPTABLE, desc = "get back 0-1")
-	@Outcome(id="[1, 0]", expect = Expect.ACCEPTABLE, desc = "get back 1-0")
+	@Outcome(id="[1, 2]", expect = Expect.ACCEPTABLE, desc = "get back 0-1")
+	@Outcome(id="[2, 1]", expect = Expect.ACCEPTABLE, desc = "get back 1-0")
 	public static class StressTest6 { 
 		
 		@Actor
 		public void actor1(MyState myState, LongResult2 r) {
-			r.r1 = myState.incrementCoresNulas();
+			r.r1 = myState.incrementCoresNulas(1);
 		}
 		
 		@Actor
 		public void actor2(MyState myState, LongResult2 r) {
-			r.r2 = myState.incrementCoresNulas();
+			r.r2 = myState.incrementCoresNulas(1);
 		}
 				
 	}

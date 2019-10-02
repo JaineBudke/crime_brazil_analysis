@@ -150,15 +150,15 @@ public class SerialAnalysis {
 				corLine.equals("PARDA")   ){
 				
 				if( corLine.equals(cor.trim().toUpperCase()) ){
-					bayes.incrementCor();
+					bayes.incrementCor(1);
 				}		
 			
 			// verifica se for é nula
 			} else if( corLine.trim().toUpperCase().equals("NULL") ){
-				bayes.incrementCoresNulas();
+				bayes.incrementCoresNulas(1);
 			} else {
 				if( cor.equals("Outras") ){
-					bayes.incrementCor();
+					bayes.incrementCor(1);
 				}	
 			}
 			
@@ -169,11 +169,11 @@ public class SerialAnalysis {
 				String turnoLine = line[1];
 				
 				if( turnoLine.equals(turno) ){
-					bayes.incrementTurno();
+					bayes.incrementTurno(1);
 				}
 
 			} else {
-				bayes.incrementTurnoNulo();
+				bayes.incrementTurnoNulo(1);
 			}
 				
 			
@@ -181,10 +181,10 @@ public class SerialAnalysis {
 			if( !line[2].trim().toUpperCase().equals("NULL") ) {
 				String sexoLine = line[2];
 				if(sexoLine.equals(sexo)) {
-					bayes.incrementSexo();
+					bayes.incrementSexo(1);
 				} 	
 			} else {
-				bayes.incrementSexoNulo();
+				bayes.incrementSexoNulo(1);
 			}
 			
 			

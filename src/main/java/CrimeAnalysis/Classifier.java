@@ -21,7 +21,7 @@ public class Classifier {
 	 */
 	public String makeAnalysis( Process proc, String cor, String sexo, String turno ){
 		
-		int qntThreads = 4;
+		//int qntThreads = 4;
 
 		// instancia da classe Features
 		Features bayes = new Features();
@@ -106,6 +106,10 @@ public class Classifier {
 		float coresNulas = bayes.getCoresNulas();
 		float turnoNulo = bayes.getTurnoNulo();
 		float sexoNulo = bayes.getSexoNulo();
+		
+		System.out.println(qntCor);
+		System.out.println(qntSexo);
+		System.out.println(qntTurno);
 		
 		
 		// Classificações: Seguro (0), Pouco seguro (1), Inseguro (2)

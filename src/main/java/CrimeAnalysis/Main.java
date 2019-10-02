@@ -1,7 +1,9 @@
 package CrimeAnalysis;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ForkJoinPool;
 
 
 
@@ -15,9 +17,9 @@ public class Main {
 				
 		Process proc = new Process();		
 		
-		
+		Features bayes = new Features();
 		// processamento dos dados diretamentos dos datasets
-		ArchiveThread arc = new ArchiveThread(proc);
+		ArchiveThread arc = new ArchiveThread(bayes,proc);
 		arc.initialize();
 		
 		int p1 = 0;
@@ -73,11 +75,63 @@ public class Main {
 				cor = "OUTRAS";
 			}
 
-			Classifier classif = new Classifier();
+			/*Classifier classif = new Classifier();
 			String result = classif.makeAnalysis( proc, cor, sexo, turno );
-
+			
 			System.out.println(result);
-
+			*/
+			
+			
+			//List<String[]> data = proc.getList();
+			
+			/*System.out.println(data.size());
+			
+			ForkJoinPool pool = new ForkJoinPool();
+			
+			Features bayes = new Features();
+			
+			ClassifierFork task = new ClassifierFork(data, bayes, sexo, cor, turno);
+			pool.invoke(task);
+			
+			// classifica dados
+			Classifier classif = new Classifier();
+			String dC = classif.dataClassifier(bayes, proc);
+			
+			System.out.println(dC);
+			*/
+			
+			List<String> dataC = proc.getListC();
+			List<String> dataS = proc.getListS();
+			List<String> dataT = proc.getListT();
+			
+			ClassifierStreams classif = new ClassifierStreams(  );
+			
+			List<String> newDataC = classif.streamsCompute(dataC, cor);
+			List<String> newDataS = classif.streamsCompute(dataS, sexo);
+			List<String> newDataT = classif.streamsCompute(dataT, turno);
+			
+			int qntFurtos = bayes.getFurtos();
+			int qntSexo   = newDataS.size();
+			int qntTurno  = newDataT.size();
+			int qntCor    = newDataC.size();
+			
+			int coresNulas = bayes.getCoresNulas();
+			int turnoNulo  = bayes.getTurnoNulo();
+			int sexoNulo  = bayes.getSexoNulo();
+			
+			System.out.println(qntFurtos);
+			System.out.println(qntSexo);
+			System.out.println(qntTurno);
+			System.out.println(qntCor);
+			System.out.println(coresNulas);
+			System.out.println(turnoNulo);
+			System.out.println(sexoNulo);
+			
+			
+			
+			String result = classif.dataClassifier( qntFurtos, qntSexo, qntTurno, qntCor, coresNulas, turnoNulo, sexoNulo );
+			
+			System.out.println(result);
 			
 			System.out.println("0: encerrar programa; 1: fazer predição");
 			p1 = scan.nextInt();

@@ -23,8 +23,12 @@ public class Process {
 	private Scanner arc2;
 	private Scanner arc3;
 	
-	// armazenar dados do dataset aqui em uma estrutura de dados (usar hashmap)
+	// armazenar dados do dataset aqui em uma estrutura de dados
     private List<String[]> dataset;
+
+    private List<String> datasetCor;
+    private List<String> datasetSexo;
+    private List<String> datasetTurno;
     
     
 	// contador do dataset
@@ -65,9 +69,30 @@ public class Process {
 		
 		dataset = Collections.synchronizedList(new ArrayList<String[]>()); 
 		
+	    datasetCor   = Collections.synchronizedList(new ArrayList<String>()); 
+	    datasetSexo  = Collections.synchronizedList(new ArrayList<String>()); 
+	    datasetTurno = Collections.synchronizedList(new ArrayList<String>()); 
+	    
+	    
 		count = new AtomicInteger(0); 
 		
 	}
+	
+	
+	public List<String> getListS() {
+		return datasetSexo;
+	}
+	
+	public List<String> getListC() {
+		return datasetCor;
+	}
+	
+	public List<String> getListT() {
+		return datasetTurno;
+	}
+	
+	
+	
 	
 	/**
 	 * Recupera quantidade de furtos
@@ -118,6 +143,22 @@ public class Process {
 	}
 	
 	
+	
+
+	public synchronized void putLineS( String memLine ){		
+		datasetSexo.add( memLine );
+	}
+	
+	public synchronized void putLineC( String memLine ){		
+		datasetCor.add( memLine );
+	}
+	
+	public synchronized void putLineT( String memLine ){		
+		datasetTurno.add( memLine );
+	}
+	
+	
+	
 	/**
 	 * Recupera proxima linha do arquivo
 	 * @return linha corrente
@@ -127,14 +168,13 @@ public class Process {
 		String line = "";
 		
 		// recupera proxima linha do arquivo
-		if( arc1.hasNextLine() ) {
+		/*if( arc1.hasNextLine() ) {
 			line = arc1.nextLine();			
-		} /*else if( arc2.hasNextLine() ){
+		} else if( arc2.hasNextLine() ){
 			line = arc2.nextLine();
-		} else if( arc3.hasNextLine() ){
+		} else*/ if( arc3.hasNextLine() ){
 			line = arc3.nextLine();
-		}*/
-		
+		} 
 		System.out.println(line);
 		
 		return line;
