@@ -1,6 +1,10 @@
 package CrimeAnalysis;
 
+
+
 public class DataT implements Runnable {
+	
+	
 	
 	// instancia do processador do dataset
 	private Process archive;
